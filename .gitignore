@@ -11,6 +11,7 @@
 .dart_tool/
 .idea/
 build/
+.vscode/
 
 
 
