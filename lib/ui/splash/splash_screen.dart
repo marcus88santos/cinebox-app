@@ -15,17 +15,26 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with LoaderAndMessa
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Splash Screen'),
-      ),
-      floatingActionButton: FloatingActionButton(onPressed: () async {
-        // showLoader();
-        // await Future.delayed(Duration(seconds: 2));
-        // hideLoader();
-        showInfoSnackbar('Erro qualquer');
-      }),
-      body: Center(
-        child: Image.asset(R.ASSETS_IMAGES_BG_LOGIN_PNG),
+      body: Stack(
+        children: [
+          Image.asset(
+            R.ASSETS_IMAGES_BG_LOGIN_PNG,
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+          Container(
+            constraints: BoxConstraints.expand(),
+            color: Colors.black.withAlpha(170),
+            ),
+          Center(
+            child: Image.asset(
+              R.ASSETS_IMAGES_LOGO_PNG,
+              width: 200,
+              height: 200,
+            ),
+          )
+        ],
       ),
     );
   }
