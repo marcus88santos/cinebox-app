@@ -1,3 +1,5 @@
+import 'package:cinebox_app/core/result/result.dart';
+import 'package:cinebox_app/data/repositories/repositories_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'check_user_logged_command.g.dart';
@@ -9,7 +11,11 @@ class CheckUserLoggedCommand extends _$CheckUserLoggedCommand {
 
   void execute() async {
     state = AsyncLoading();
-    await Future.delayed(const Duration(milliseconds: 1000));
-    state = AsyncData(false);
+    final authRepository = ref.read(authRepositoryProvider);
+    final isLoggedResult = await authRepository.isLogged();
+    state = switch (isLoggedResult) {
+      Success(value: final isLogged) => AsyncData(isLogged),
+      Failure(:final error) => AsyncError(error, StackTrace.current),
+    };
   }
 }
