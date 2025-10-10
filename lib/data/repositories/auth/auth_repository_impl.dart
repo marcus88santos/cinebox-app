@@ -2,20 +2,25 @@ import 'dart:developer';
 
 import 'package:cinebox_app/core/result/result.dart';
 import 'package:cinebox_app/data/exceptions/data_exception.dart';
+import 'package:cinebox_app/data/services/auth/auth_service.dart';
 import 'package:cinebox_app/data/services/google_signin/google_signin_service.dart';
 import 'package:cinebox_app/data/services/local_storage/local_storage_service.dart';
+import 'package:dio/dio.dart';
 
 import './auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final LocalStorageService _localStorageService;
   final GoogleSigninService _googleSigninService;
+  final AuthService _authService;
 
   AuthRepositoryImpl({
     required LocalStorageService localStorageService,
     required GoogleSigninService googleSigninService,
+    required AuthService authService,
   }) : _localStorageService = localStorageService,
-       _googleSigninService = googleSigninService;
+       _googleSigninService = googleSigninService,
+       _authService = authService;
 
   @override
   Future<Result<bool>> isLogged() async {
@@ -34,8 +39,21 @@ class AuthRepositoryImpl implements AuthRepository {
     final result = await _googleSigninService.signIn();
     switch (result) {
       case Success<String>(:final value):
-        await _localStorageService.saveIdToken(value);
-        return successOfUnit();
+        try {
+          await _localStorageService.saveIdToken(value);
+          await _authService.auth();
+          return successOfUnit();
+        } on DioException catch (e, t) {
+          log(
+            'Erro ao autenticar o usuário no backend',
+            name: 'AuthRepository',
+            error: e,
+            stackTrace: t,
+          );
+          return Failure(
+            DataException(message: 'Erro ao realizar login no backend'),
+          );
+        }
       case Failure<String>(:final error):
         log('Erro ao realizar Login', name: 'AuthRepository', error: error);
         return Failure(
