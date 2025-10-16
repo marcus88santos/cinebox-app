@@ -1,7 +1,5 @@
 import 'package:cinebox_app/ui/movies/widgets/genres_box.dart';
 import 'package:cinebox_app/ui/movies/widgets/movies_appbar.dart';
-import 'package:cinebox_app/ui/movies/widgets/movies_by_category.dart';
-import 'package:cinebox_app/ui/movies/widgets/movies_by_genre.dart';
 import 'package:cinebox_app/ui/movies/widgets/movies_by_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

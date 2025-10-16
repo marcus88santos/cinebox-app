@@ -144,7 +144,7 @@ class _TmdbService implements TmdbService {
   }
 
   @override
-  Future<MovieResponse> getUpcomingMovies({
+  Future<MovieResponse> getUpComingMovies({
     String language = 'pt-BR',
     int page = 1,
   }) async {
