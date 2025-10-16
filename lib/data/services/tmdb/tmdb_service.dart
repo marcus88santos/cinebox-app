@@ -34,7 +34,7 @@ abstract class TmdbService {
   });
 
   @GET('/movie/up_coming')
-  Future<MovieResponse> getUpcomingMovies({
+  Future<MovieResponse> getUpComingMovies({
     @Query('language') String language = 'pt-BR',
     @Query('page') int page = 1,
   });
